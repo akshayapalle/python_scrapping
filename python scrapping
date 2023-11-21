@@ -1,0 +1,48 @@
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+
+def automate_download(district_name):
+    # Path to your chromedriver executable
+    driver_path = 'C:/Users/Public/Desktop/Google Chrome.exe'
+
+    # Initialize Chrome WebDriver with options
+    options = webdriver.ChromeOptions()
+    options.add_argument('--ignore-certificate-errors')
+
+    # Set the path to the chromedriver executable
+    service = webdriver.ChromeService(executable_path=driver_path)
+    driver = webdriver.Chrome(service=service, options=options)
+    driver.maximize_window()
+
+    try:
+        # Open the website
+        driver.get('https://ceoelection.maharashtra.gov.in/searchlist/')
+
+        # Find and select the district
+        district_dropdown = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.ID, 'ddlDistrict')))
+        district_dropdown.send_keys(district_name)
+
+        # Wait for the page to load after selecting the district
+        WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.ID, 'ddlAC')))
+
+        # Select Assembly Constituency, Type of Revision, Select Part - Implement similar steps as above
+        # ... (code to select Assembly Constituency, Type of Revision, and Part)
+
+        # Handle captcha entry manually
+
+        # Click on the 'Open PDF' button or trigger the download
+        open_pdf_button = driver.find_element(By.ID, 'your_open_pdf_button_id')
+        open_pdf_button.click()
+
+        # Handle the download process
+        # Assuming the PDF gets downloaded automatically to the default Downloads folder
+        # You'll need to handle the download process based on how the website handles downloads
+
+    finally:
+        # Close the WebDriver
+        driver.quit()
+
+# Run the function with the desired district name
+automate_download('Your District Name')
